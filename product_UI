@@ -5,9 +5,9 @@ from main import MaxHeap, MinHeap, prices
 # initializing
 maxHeap = MaxHeap()
 minHeap = MinHeap()
-for price, click in prices:
-    maxHeap.insert((price, click))
-    minHeap.insert((price, click))
+for price, click, order_id, country, page in prices:
+    maxHeap.insert((price, click, order_id, country, page))
+    minHeap.insert((price, click, order_id, country, page))
 
 # setting color
 sg.theme('lightblue')
@@ -73,19 +73,19 @@ while True:
     elif event == 'Find Lowest Price':
     # min heap logic
         if minHeap.heap:
-            minPrice, minClicks = minHeap.extractMin()
+            minPrice, minClicks, order_id, country, page = minHeap.extractMin()
             window['LOWPRICE'].update(f"${minPrice:.2f}")  # lowest price
-            #window['ORDER_ID'].update(order_id) #orderid
-            #window['COUNTRY'].update(country) #countryid
-            #window['PAGE2'].update(page2) #page#
+            window['ORDER_ID'].update(order_id) #orderid
+            window['COUNTRY'].update(country) #countryid
+            window['PAGE'].update(page) #page#
             window['CLICKS'].update(minClicks) #clicks
     elif event == 'Find Highest Price':
         # max heap logic
         if maxHeap.heap:
-            maxPrice, maxClicks = maxHeap.extractMax()
+            maxPrice, maxClicks, order_id, country, page = maxHeap.extractMax()
             window['HIGHPRICE'].update(f"${maxPrice:.2f}") # highest price
             window['CLICKS'].update(maxClicks)
-            #window['ORDER_ID'].update(order_id) 
-            #window['COUNTRY'].update(country)
-            #window['PAGE2'].update(page2)
+            window['ORDER_ID'].update(order_id)
+            window['COUNTRY'].update(country)
+            window['PAGE'].update(page)
 window.close()

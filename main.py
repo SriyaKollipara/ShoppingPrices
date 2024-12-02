@@ -11,10 +11,9 @@ with open(fileName, 'r') as file:
     for i in reader:
         try:
             price = float(i[11])
-            click = int(i[4])
-            order_id = i[0]
-            country = i[1]
-            page = i[2]
+            click = int(i[3])
+            order_id = i[5]
+            page = i[13]
             prices.append((price, click, order_id, page))
         except (ValueError, IndexError):
             continue

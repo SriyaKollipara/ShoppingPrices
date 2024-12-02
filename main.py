@@ -13,9 +13,8 @@ with open(fileName, 'r') as file:
             price = float(i[11])
             click = int(i[4])
             order_id = i[0]
-            country = i[1]
             page = i[2]
-            prices.append((price, click, order_id, country, page))
+            prices.append((price, click, order_id, page))
         except (ValueError, IndexError):
             continue
 
@@ -61,14 +60,14 @@ class MaxHeap:
 
 # Build max heap
 maxHeap = MaxHeap()
-for price, click, order_id, country, page in prices:
-    maxHeap.insert((price, click, order_id, country, page))
+for price, click, order_id, page in prices:
+    maxHeap.insert((price, click, order_id, page))
 
 # Find the most expensive purchase and its clicks
 if maxHeap.heap:
-    maxPrice, maxClicks, order_id, country, page = maxHeap.extractMax()
+    maxPrice, maxClicks, order_id, page = maxHeap.extractMax()
 else:
-    maxPrice, maxClicks = None, None, None, None, None
+    maxPrice, maxClicks = None, None, None, None
 
 class MinHeap:
     def __init__(self):
@@ -109,10 +108,10 @@ class MinHeap:
 
 
 minHeap=MinHeap()
-for price, click, order_id, country, page in prices:
+for price, click, order_id, page in prices:
     minHeap.insert((price, click, order_id, country, page))
 
 if minHeap.heap:
-    minPrice, minClicks, order_id, country, page = minHeap.extractMin()
+    minPrice, minClicks, order_id, page = minHeap.extractMin()
 else:
-    minPrice, minClicks=None, None, None, None, None
+    minPrice, minClicks=None, None, None, None

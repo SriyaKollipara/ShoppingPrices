@@ -5,9 +5,9 @@ from main import MaxHeap, MinHeap, prices
 # initializing
 maxHeap = MaxHeap()
 minHeap = MinHeap()
-for price, click, order_id, country, page in prices:
-    maxHeap.insert((price, click, order_id, country, page))
-    minHeap.insert((price, click, order_id, country, page))
+for price, click, order_id, page in prices:
+    maxHeap.insert((price, click, order_id, page))
+    minHeap.insert((price, click, order_id, page))
 
 # setting color
 sg.theme('lightblue')
@@ -19,10 +19,8 @@ layout = [
             [
                 # padding info https://www.geeksforgeeks.org/how-to-add-padding-to-a-tkinter-widget-only-on-one-side/
                 [sg.Text('Details About Order', font=('Verdana', 14, 'bold'), pad=(0, 10),background_color='white')],
-                [sg.Text('•Order ID:', font=('Verdana', 12), background_color='white'),
+                [sg.Text('•Session ID:', font=('Verdana', 12), background_color='white'),
                  sg.Text(size=(10, 1), key='ORDER_ID', background_color='white')],
-                [sg.Text('•Country:', font=('Verdana', 12), background_color='white'),
-                 sg.Text(size=(10, 1), key='COUNTRY', background_color='white')],
                 [sg.Text('•Number of Clicks:', font=('Verdana', 12),background_color='white'), sg.Text(size=(10,1), key='CLICKS', background_color='white')],
                 [sg.Text('•Page #:',font=('Verdana', 12),background_color='white'), sg.Text(size=(10,1), key='PAGE', background_color='white')],
             ],
@@ -73,19 +71,17 @@ while True:
     elif event == 'Find Lowest Price':
     # min heap logic
         if minHeap.heap:
-            minPrice, minClicks, order_id, country, page = minHeap.extractMin()
+            minPrice, minClicks, order_id, page = minHeap.extractMin()
             window['LOWPRICE'].update(f"${minPrice:.2f}")  # lowest price
             window['ORDER_ID'].update(order_id) #orderid
-            window['COUNTRY'].update(country) #countryid
             window['PAGE'].update(page) #page#
             window['CLICKS'].update(minClicks) #clicks
     elif event == 'Find Highest Price':
         # max heap logic
         if maxHeap.heap:
-            maxPrice, maxClicks, order_id, country, page = maxHeap.extractMax()
+            maxPrice, maxClicks, order_id, page = maxHeap.extractMax()
             window['HIGHPRICE'].update(f"${maxPrice:.2f}") # highest price
             window['CLICKS'].update(maxClicks)
             window['ORDER_ID'].update(order_id)
-            window['COUNTRY'].update(country)
             window['PAGE'].update(page)
 window.close()

@@ -27,7 +27,7 @@ layout = [
             # for controlling layout https://docs.pysimplegui.com/en/latest/documentation/module/layouts/
             background_color='white', #white box around everything
             pad=(10, 10),
-            size=(300, 180),
+            size=(300, 130),
             element_justification='left',
             vertical_alignment= 'top'
         ),

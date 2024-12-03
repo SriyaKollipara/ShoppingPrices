@@ -1,13 +1,22 @@
 import PySimpleGUI as sg
+import time
 from main import MaxHeap, MinHeap, prices
 
 # template/UI inspired by https://realpython.com/pysimplegui-python/
 # initializing
+startMax = time.time()
 maxHeap = MaxHeap()
-minHeap = MinHeap()
 for price, click, order_id, page in prices:
     maxHeap.insert((price, click, order_id, page))
+endMax = time.time()
+maxTime = endMax - startMax
+
+startMin = time.time()
+minHeap = MinHeap()
+for price, click, order_id, page in prices:
     minHeap.insert((price, click, order_id, page))
+endMin = time.time()
+minTime = endMin - startMin
 
 # setting color
 sg.theme('lightblue')
@@ -15,25 +24,50 @@ sg.theme('lightblue')
 # inside window inspired content by https://www.tutorialspoint.com/pysimplegui/pysimplegui_window_class.htm
 layout = [
     [
-        sg.Column( # left side of UI
+        sg.Column(  # left side of UI
             [
-                # padding info https://www.geeksforgeeks.org/how-to-add-padding-to-a-tkinter-widget-only-on-one-side/
-                [sg.Text('Details About Order', font=('Verdana', 14, 'bold'), pad=(0, 10),background_color='white')],
-                [sg.Text('•Session ID:', font=('Verdana', 12), background_color='white'),
-                 sg.Text(size=(10, 1), key='ORDER_ID', background_color='white')],
-                [sg.Text('•Number of Clicks:', font=('Verdana', 12),background_color='white'), sg.Text(size=(10,1), key='CLICKS', background_color='white')],
-                [sg.Text('•Page #:',font=('Verdana', 12),background_color='white'), sg.Text(size=(10,1), key='PAGE', background_color='white')],
+                [  # "Details About Order" box
+                    sg.Column(
+                        [
+                            # padding info https://www.geeksforgeeks.org/how-to-add-padding-to-a-tkinter-widget-only-on-one-side/
+                            [sg.Text('Details About Order', font=('Verdana', 14, 'bold'), pad=(0, 10), background_color='white')],
+                            [sg.Text('•Session ID:', font=('Verdana', 12), background_color='white'),
+                             sg.Text(size=(10, 1), key='ORDER_ID', background_color='white')],
+                            [sg.Text('•Number of Clicks:', font=('Verdana', 12), background_color='white'),
+                             sg.Text(size=(10, 1), key='CLICKS', background_color='white')],
+                            [sg.Text('•Page #:', font=('Verdana', 12), background_color='white'),
+                             sg.Text(size=(10, 1), key='PAGE', background_color='white')],
+                        ],
+                        # for controlling layout https://docs.pysimplegui.com/en/latest/documentation/module/layouts/
+                        background_color='white', #white box around everything
+                        pad=(10, 10),
+                        size=(300, 130),
+                        element_justification='left',
+                    )
+                ],
+                [  # "Time Comparison" box
+                    sg.Column(
+                        [
+                            [sg.Text('Time Comparison', font=('Verdana', 14, 'bold'), background_color='white')],
+                            [sg.Text('•Min Time:', font=('Verdana', 12), background_color='white'),
+                             sg.Text(size=(10, 1), key='MINTIME', background_color='white')],
+                            [sg.Text('•Max Time:', font=('Verdana', 12), background_color='white'),
+                             sg.Text(size=(10, 1), key='MAXTIME', background_color='white')],
+                        ],
+                        background_color='white',
+                        pad=(10, 10),
+                        size=(300, 90),
+                        element_justification='left',
+                    )
+                ],
             ],
-            # for controlling layout https://docs.pysimplegui.com/en/latest/documentation/module/layouts/
-            background_color='white', #white box around everything
+            vertical_alignment='top',
             pad=(10, 10),
-            size=(300, 130),
-            element_justification='left',
-            vertical_alignment= 'top'
         ),
         sg.VSeparator(),  # vertical separator for right side with outputs
         sg.Column(
             [
+                #[sg.Text('', size=(0, 0))],
                 [sg.Text('Lowest Priced Order:', font=('Verdana', 12, 'bold'))],
                 [ # tools used https://docs.pysimplegui.com/en/latest/call_reference/tkinter/elements/column/
                     sg.Column(  # white rectangle for background design, nested columns for design https://docs.pysimplegui.com/en/latest/cookbook/original/multiple_columns/
@@ -44,6 +78,7 @@ layout = [
                 [sg.Text("", size=(1, 1))],
                 [sg.Button('Find Lowest Price', font=('Verdana', 12, 'bold'), button_color=('white', 'green'),
                            border_width=4)], #button for finding lowest price
+                [sg.Text("", size=(1, 1))],
                 [sg.HSeparator()],
                 [sg.Text('Highest Priced Order:', font=('Verdana', 12, 'bold'))],
 [
@@ -55,14 +90,16 @@ layout = [
             [sg.Text("", size=(1, 1))], #spacing gap
             [sg.Button('Find Highest Price', font=('Verdana', 12, 'bold'), button_color=('white', 'red'),
                            border_width=4)], #button for finding highest price
+            [sg.Text("", size=(1, 1))], #spacing gap
             ],
             element_justification='center',
             expand_y=True,
+            pad=(10, 4),
         )
     ]
 ]
 # window
-window = sg.Window('Product Recommender', layout, location=(600, 300))
+window = sg.Window('Product Recommender', layout, location=(600, 300), finalize=True)
 # while window is open
 while True:
     event, values = window.read()
@@ -76,6 +113,7 @@ while True:
             window['ORDER_ID'].update(order_id) #orderid
             window['PAGE'].update(page) #page#
             window['CLICKS'].update(minClicks) #clicks
+            window['MINTIME'].update(f"{minTime:.8f} s") #min time display
     elif event == 'Find Highest Price':
         # max heap logic
         if maxHeap.heap:
@@ -84,4 +122,5 @@ while True:
             window['CLICKS'].update(maxClicks)
             window['ORDER_ID'].update(order_id)
             window['PAGE'].update(page)
+            window['MAXTIME'].update(f"{maxTime:.8f} s") #max time display
 window.close()

@@ -1,7 +1,7 @@
 # ShoppingPrices
 *DSA Project 3*
 
-The purpose of this Python Project is to use heaps to gain an understanding about consumer spending. The GUI uses data to retrieve the highest and lowest priced purchases. This is helpful for users to sort and retrieve information about extreme shopping datapoints.
+The purpose of this Python Project is to use heaps to gain an understanding about consumer spending. The GUI uses data to retrieve the highest and lowest priced purchases from the shopping data csv in the repository. This is helpful for users to sort and retrieve information about extreme shopping datapoints.
 
 To run the program you must install the **PySimpleGUI** Library.
 You must run the file product_UI.py for the application to run.

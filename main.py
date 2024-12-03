@@ -1,4 +1,5 @@
 import csv
+import time
 
 fileName = 'e-shop clothing 2008.csv'
 prices = []
@@ -68,7 +69,7 @@ for price, click, order_id, page in prices:
 
 #end timer
 endMax = time.time();
-maxTime = startMin-endMin;
+maxTime = startMax-endMax;
 
 # Find the most expensive purchase and its clicks
 if maxHeap.heap:
